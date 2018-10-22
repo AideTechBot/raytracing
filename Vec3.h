@@ -33,7 +33,8 @@ class Vec3 {
     inline Vec3& operator/=(const float t);
 
     inline float length() const;
-    inline float squaredLength() const;
+    inline float squaredLength() const {
+      return e[0]*e[0] + e[1]*e[1] + e[2]*e[2]; }
     inline void normalize();
 };
 
