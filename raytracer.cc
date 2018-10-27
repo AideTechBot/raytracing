@@ -51,12 +51,26 @@ Hitable *randomscene() {
   return new HitableList(list, i);
 }
 
+void loadingBar(double progress) {
+  int barWidth = 70;
+
+  std::cout << "[";
+  int pos = barWidth * progress;
+  for (int i = 0; i < barWidth; ++i) {
+    if (i < pos) std::cout << "=";
+    else if (i == pos) std::cout << ">";
+    else std::cout << " ";
+  }
+  std::cout << "] " << progress * 100.0 << " %\r";
+  std::cout.flush();
+}
 
 int main() {
-    int nx = 600;
-    int ny = 300;
-    int ns = 20;
-    std::cout << "P3\n" << nx << " " << ny << "\n255\n";
+    system("setterm -cursor off");
+    int nx = 2000;
+    int ny = 1000;
+    int ns = 100;
+    std::cerr << "P3\n" << nx << " " << ny << "\n255\n";
 
     //objects in scene
     
@@ -73,12 +87,14 @@ int main() {
     //list[1] = new Sphere(Vec3(R, 0, -1), R,  new Lambertian(Vec3(1,0,0)));
     //Hitable *world = new HitableList(list, 2);
     
-    Vec3 lookfrom(3,3,2);
-    Vec3 lookat(-4, 1, 0);
+    Vec3 lookfrom(10,1.75,3);
+    Vec3 lookat(0, 1, 0);
     float dist_to_focus = (lookfrom - lookat).length();
     float aperture = 2.0;
 
-    Camera cam(lookfrom, lookat, Vec3(0,1,0), 90, float(nx)/float(ny), aperture, dist_to_focus);
+    Camera cam(lookfrom, lookat, Vec3(0,1,0), 20, float(nx)/float(ny), aperture, dist_to_focus);
+    long total = nx * ny * ns;
+    long current = 0;
     for (int j = ny-1; j >= 0; j--) {
       for (int i = 0; i < nx; i++) {
         Vec3 col(0, 0, 0);
@@ -87,6 +103,10 @@ int main() {
           float v = float(j + drand48()) / float(ny);
           Ray r = cam.get_ray(u, v);
           col += color(r, world, 0);
+
+          loadingBar(double(current++)/double(total));
+          //std::cout << current++ << "/" << total << "\r";
+          //std::cout.flush();
         }
         col /= float(ns);
         col = Vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2])); 
@@ -94,7 +114,10 @@ int main() {
         int ig = int(255.99*col[1]);
         int ib = int(255.99*col[2]);
         
-        std::cout << ir << " " << ig << " " << ib << "\n";
+        std::cerr << ir << " " << ig << " " << ib << "\n";
+
       }
     }
+    std::cout << std::endl;
+    system("setterm -cursor on");
 }
