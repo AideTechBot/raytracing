@@ -45,8 +45,8 @@ Hitable *randomscene() {
   }
 
   list[i++] = new Sphere(Vec3(0, 1, 0), 1.0, new Dielectric(1.5));
-  list[i++] = new Sphere(Vec3(-4, 1, 0), 1.0, new Lambertian(Vec3(0.4, 0.2, 0.1)));
-  list[i++] = new Sphere(Vec3(4, 1, 0), 1.0, new Metal(Vec3(0.7, 0.6, 0.5), 0.0));
+  list[i++] = new Sphere(Vec3(-2, 1, 0), 1.0, new Lambertian(Vec3(0.4, 0.2, 0.1)));
+  list[i++] = new Sphere(Vec3(2, 1, 0), 1.0, new Metal(Vec3(0.7, 0.6, 0.5), 0.0));
 
   return new HitableList(list, i);
 }
@@ -69,7 +69,7 @@ int main() {
     system("setterm -cursor off");
     int nx = 2000;
     int ny = 1000;
-    int ns = 100;
+    int ns = 150;
     std::cerr << "P3\n" << nx << " " << ny << "\n255\n";
 
     //objects in scene
@@ -87,12 +87,12 @@ int main() {
     //list[1] = new Sphere(Vec3(R, 0, -1), R,  new Lambertian(Vec3(1,0,0)));
     //Hitable *world = new HitableList(list, 2);
     
-    Vec3 lookfrom(10,1.75,3);
+    Vec3 lookfrom(6,1.75,4);
     Vec3 lookat(0, 1, 0);
     float dist_to_focus = (lookfrom - lookat).length();
     float aperture = 2.0;
 
-    Camera cam(lookfrom, lookat, Vec3(0,1,0), 20, float(nx)/float(ny), aperture, dist_to_focus);
+    Camera cam(lookfrom, lookat, Vec3(0,1,0), 40, float(nx)/float(ny), aperture, dist_to_focus);
     long total = nx * ny * ns;
     long current = 0;
     for (int j = ny-1; j >= 0; j--) {
