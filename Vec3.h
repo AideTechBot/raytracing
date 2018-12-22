@@ -139,4 +139,9 @@ inline Vec3 cross(const Vec3 &v1, const Vec3 &v2) {
     (v1.e[0]*v2.e[1] - v1.e[1]*v2.e[0]));
 }
 
+std::ostream &operator<<(std::ostream &os, Vec3 &vec) {
+  os << "(" << vec.x() << ", " << vec.y() << ", " << vec.z() << ")";
+  return os;
+}
+
 #endif

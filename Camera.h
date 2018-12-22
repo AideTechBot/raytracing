@@ -12,8 +12,11 @@ Vec3 random_in_unit_disk() {
 }
 
 class Camera {
+  private:
+    bool DOF = false;
   public:
     Camera(Vec3 lookfrom, Vec3 lookat, Vec3 vup, float vfov, float aspect, float apeture, float focus_dist) {
+      focus_dist = 1;
       lens_radius = apeture / 2;
       float theta = vfov*M_PI/180;
       float half_height = tan(theta/2);
@@ -30,6 +33,7 @@ class Camera {
     Ray get_ray(float s, float t) {
       Vec3 rd = lens_radius*random_in_unit_disk();
       Vec3 offset = rd.x() * u + rd.y() * v;
+      offset = Vec3(0,0,0);
       return Ray(origin + offset, lower_left_corner + s*horizontal + t*vertical - origin - offset);
     }
 
